@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static i18n crispy_forms_tags %}
+
+{% block navbar %} {% include 'base.html' %} {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <!--    <div class="row"></div>-->
+    <div class="row justify-content-center p-2">
+        <div class="row justify-content-center">
+            <a class="btn btn-warning w-50 mb-5" href="#add">{% trans 'Add missing person' %}</a>
+        </div>
+        {% for person in missing_persons %}
+        <div class="my- col-12 col-sm-6 col-lg-4 ">
+            <div class="card my-2 px-2 justify-content-center">
+                <h3 class="btn text-light mt-2 {% if person.report_type == 'found' %} bg-light-blue {% else %} bg-danger {% endif %}">
+                   {{ person.get_report_type_display }}
+                </h3>
+                <img src="{{person.photo.url}}" class="img-fluid thumbnail h-75 w-75" alt="">
+                <p>{% trans 'Name' %}: {{person.name}}</p>
+                <p>{% trans 'Age' %}: {{ person.age}}</p>
+                <p>{% trans 'Last seen' %}: {{ person.last_seen_location }} - {{ person.last_seen_date }}</p>
+                <p>{% trans 'Call' %}: {{ person.reporters_phone_number }}</p>
+                <p>{{ person.description }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">{% trans 'Sorry there are no services at the moment. Please try again later.' %}</p>
+        {% endfor %}
+    </div>
+
+    <div class="col d-flex justify-content-center mt-5">
+        <div class="pagination">
+    <span class="step-links">
+        {% if missing_persons.has_previous %}
+            <a href="?page=1">&laquo; {% trans 'first' %}</a>
+            <a href="?page={{ missing_persons.previous_page_number }}">{% trans 'previous' %}</a>
+        {% endif %}
+
+        <span class="current-page">
+            {% trans 'Page' %} {{ missing_persons.number }} {% trans 'of' %} {{ missing_persons.paginator.num_pages }}.
+        </span>
+
+        {% if missing_persons.has_next %}
+            <a href="?page={{ missing_persons.next_page_number }}">{% trans 'next' %} </a>
+            <a href="?page={{ missing_persons.paginator.num_pages }}">{% trans 'last' %} &raquo;</a>
+        {% endif %}
+    </span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center p-2">
+        <hr id="add" class="my-5">
+        <div class="mb-5 col-11 col-sm-10 col-lg-8 p-">
+            <div class="input-group">
+                <form method="POST" class="form-control" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <div class="row justify-content-center my-4">
+                        <input class="btn w-50 bg-light-blue text-light" type="submit" value={% trans 'Send' %}>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %} {% include 'footer.html' %} {% endblock %}
+
+{% block scripts %} {% endblock %}

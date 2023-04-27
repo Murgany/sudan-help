@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static i18n crispy_forms_tags %}
+
+{% block navbar %} {% include 'base.html' %} {% endblock %}
+
+{% block content %}
+
+<div class="container" style="min-height: 80vh">
+    <div class="row justify-content-center">
+        {% if page_obj %}
+        <h2 class="text-center dark-text">{% trans 'Search Results' %}</h2>
+            {% for result in page_obj %}
+            {% if result.request_type %}
+            <div class="col-12 col-sm-6 col-lg-4 ">
+                <div class="card m-2 px-2 justify-content-center">
+                <h3 class="btn text-light mt-2 {% if result.request_type == 'available' %} bg-light-blue {% else %} bg-danger {% endif %}">
+                        {{ result.get_request_type_display }}: {{ result.item_name }}</h3>
+                        <p><strong>{% trans 'Address:' %}</strong> {{ result.address }}</p>
+                        <p><strong>{% trans 'Phone number:' %}</strong> {{ result.phone_number }}</p>
+                        <p>{{ result.description }}</p>
+                </div>
+            </div>
+            {% elif result.service_name %}
+            <div class="col-12 col-sm-6 col-lg-4 ">
+                <div class="card m-2 px-2 justify-content-center">
+                <h3 class="btn text-light mt-2 {% if result.service_name == 'Hospital' %} bg-light-blue {% else %} bg-secondary {% endif %}">
+                        {{ result.get_service_name_display }} {{ result.hospital_or_pharmacy_name }}</h3>
+                        <p><strong>{% trans 'Address:' %}</strong> {{ result.address }}</p>
+                        <p><strong>{% trans 'Phone number:' %}</strong> {{ result.phone_number }}</p>
+                        <p><strong>{% trans 'Open from:' %}</strong> {{ result.open_from }}</p>
+                        <p><strong>{% trans 'Closes at:' %}</strong> {{ result.closes_at }}</p>
+                        <p>{{ result.description }}</p>
+                </div>
+            </div>
+            {% elif result.report_type %}
+            <div class="my- col-12 col-sm-6 col-lg-4 ">
+            <div class="card my-2 px-2 justify-content-center">
+                <h3 class="btn text-light mt-2 {% if result.report_type == 'found' %} bg-light-blue {% else %} bg-danger {% endif %}">
+                {{ result.get_report_type_display }}
+                </h3>
+                <img src="{{result.photo.url}}" class="img-fluid thumbnail h-75 w-75" alt="">
+                <p>{% trans 'Name' %}: {{result.name}}</p>
+                <p>{% trans 'Age' %}: {{ result.age}}</p>
+                <p>{% trans 'Last seen' %}: {{ result.last_seen_location }} - {{ result.last_seen_date }}</p>
+                <p>{% trans 'Call' %}: {{ result.reporters_phone_number }}</p>
+                <p>{{ result.description }}</p>
+            </div>
+        </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        {% if page_obj.has_other_pages %}
+    <div class="col d-flex justify-content-center my-5">
+        <div class="pagination ">
+        <span class="step-links">
+          {% if page_obj.has_previous %}
+            <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&laquo; {% trans 'first' %}</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&lsaquo; {% trans 'previous' %}</a>
+          {% endif %}
+
+          <span class="current-page">
+            {% trans 'Page' %} {{ page_obj.number }} {% trans 'of' %} {{ page_obj.paginator.num_pages }}
+          </span>
+
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans 'next' %} &rsaquo;</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans 'last' %} &raquo;</a>
+          {% endif %}
+        </span>
+        </div>
+    </div>
+        {% endif %}
+        {% else %}
+       <p>{% trans 'Sorry, Nothing matches your search!' %}</p>
+        {% endif %}
+    </div>
+
+
+{% endblock %}
+
+{% block footer %} {% include 'footer.html' %} {% endblock %}
+
+{% block scripts %} {% endblock %}

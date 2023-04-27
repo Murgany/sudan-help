@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static i18n crispy_forms_tags %}
+
+{% block navbar %} {% include 'base.html' %} {% endblock %}
+
+{% block content %}
+
+<!--<div class="header"></div>-->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="my- col-11 col-sm-10 col-lg-8">
+            <h4 class="dark-text">{% trans "Got some extra? Give... Don't have? Take some... Together we can overcome." %}</h4>
+            <p class="mt-4">{% trans "You may offer affordable paid services for those who are able to pay. We discourage this practice on this platform because our main aim is to bridge the gap between those in need and volunteers" %}</p>
+        </div>
+        <div class="row justify-content-center">
+            <a class="btn btn-warning w-50 mb-5" href="#add">{% trans 'Click to offer help or to find help' %}</a>
+        </div>
+    </div>
+
+    <!-- display the request information -->
+    <div class="row justify-content-center">
+        {% for request in page_obj %}
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="card my-2 px-2">
+                <h3 class="btn text-light mt-2 {% if request.request_type == 'available' %} bg-light-blue {% else %} bg-danger {% endif %}">
+                  {{ request.get_request_type_display }}
+                </h3>
+
+                <h2>{{ request.get_item_name_display }}</h2>
+                <p>{{ request.address }}</p>
+                <p>{{ request.phone_number }}</p>
+                <p>{{ request.description }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <p>{% trans 'Sorry there are no services at the moment. Please try again later.' %}</p>
+        {% endfor %}
+    </div>
+
+    <div class="col d-flex justify-content-center mt-5">
+        <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; {% trans 'first' %} </a>
+            <a href="?page={{ page_obj.previous_page_number }}">{% trans 'previous' %} </a>
+        {% endif %}
+
+        <span class="current-page">
+            {% trans 'Page' %}  {{ page_obj.number }} {% trans 'of' %}  {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">{% trans 'next' %}</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">{% trans 'last' %} &raquo;</a>
+        {% endif %}
+    </span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center p-2">
+        <hr class="my-5" id="add">
+        <div class="mb-5 col-11 col-sm-10 col-lg-8 p-">
+            <div class="input-group">
+                <form method="post" class="justify-content-between form-control">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <div class="row justify-content-center my-4">
+                        <input class="btn w-50 bg-light-blue text-light" type="submit" value={% trans 'Send' %}>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %} {% include 'footer.html' %} {% endblock %}
+
+{% block scripts %} {% endblock %}

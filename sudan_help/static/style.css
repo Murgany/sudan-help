@@ -1,0 +1,113 @@
+family=Noto+Sans+Arabic:wght@300&display=swap');
+
+body, html {
+        font-family: 'Noto Sans Arabic', sans-serif;
+        font-size: 16px;
+        transition: all 1s ease;
+        }
+
+.header-image {
+background-image: url('/media/images/Home.jpg');
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+background-attachment: fixed;
+min-height: 400px;
+display: block;
+}
+
+.search-bar {
+border-radius: 7px !important;
+color: white !important;
+width: 80px !important;
+transition: all 1s ease;
+border: none !important;
+border-bottom: 1px solid #fff !important;
+}
+
+.search-bar:hover, .search-bar:focus {
+width: 190px !important;
+transition: all 1s ease;
+margin: auto;
+}
+
+::placeholder {
+  color: #fff !important;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #fff !important;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #fff !important;
+}
+
+@media screen and (max-width: 600px){
+ .search-bar { display: block}
+}
+
+
+
+.dark-text {
+color: #253B80
+}
+
+    .bg-light-blue {
+    background-color: #169BD7
+    }
+
+    .bg-dark-blue {
+    background-color: #253B80
+    }
+
+.header {
+  background-image: url('/static/sudan-war.avif');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  object-fit: cover;
+  background-position: center;
+  min-height: 400px;
+}
+
+
+.card, form {box-shadow: 0px 25px 80px rgba(0, 0, 0, 0.15);}
+
+
+.card:hover, form:hover {box-shadow: inset 0px 1px 1px 0px rgba(255, 255, 255, 0.1), 0px 50px 100px -20px rgba(50, 50, 93, 0.25), 0px 30px 60px -30px rgba(0, 0, 0, 0.3);}
+
+
+/* Set the background color for all pagination links */
+.pagination a {
+    background-color: #f0f0f0;
+    color: #253B80;
+    text-decoration: none;
+}
+
+/* Set the background color for the active pagination link */
+.pagination .page-item.active a {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Set the background color for the hovered pagination link */
+.pagination a:hover {
+    background-color: #ddd;
+}
+
+/* Set the border radius for all pagination links to make them look like squares */
+.pagination a,
+.pagination .page-item.active a {
+    border-radius: 0;
+}
+
+/* Set the padding for all pagination links */
+.pagination a,
+.pagination span {
+    padding: 0.5rem 0.75rem;
+}
+.nav-item a:hover {
+text-decoration: underline !important;
+}
